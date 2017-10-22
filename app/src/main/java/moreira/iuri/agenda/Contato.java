@@ -15,4 +15,36 @@ public class Contato implements java.io.Serializable {
         this.emailContato = email;
         this.cidadeContato = cidade;
     }
+
+    public String getNomeContato() {
+        return nomeContato;
+    }
+
+    public void setNomeContato(String nomeContato) {
+        this.nomeContato = nomeContato;
+    }
+
+    public String getTelefoneContato() {
+        return telefoneContato;
+    }
+
+    public void setTelefoneContato(String telefoneContato) {
+        this.telefoneContato = telefoneContato;
+    }
+
+    public String getEmailContato() {
+        return emailContato;
+    }
+
+    public void setEmailContato(String emailContato) {
+        this.emailContato = emailContato;
+    }
+
+    public String getCidadeContato() {
+        return cidadeContato;
+    }
+
+    public void setCidadeContato(String cidadeContato) {
+        this.cidadeContato = cidadeContato;
+    }
 }

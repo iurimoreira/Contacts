@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -20,6 +21,7 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -32,8 +34,6 @@ public class MainActivity extends AppCompatActivity {
     EditText cidade;
     ArrayList<Contato> listaContatos = new ArrayList<>();
 
-    static final int READ_BLOCK_SIZE = 100;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,64 +43,47 @@ public class MainActivity extends AppCompatActivity {
         telefone = (EditText) findViewById(R.id.txtTelefone);
         email = (EditText) findViewById(R.id.txtEmail);
         cidade = (EditText) findViewById(R.id.txtCidade);
-        retorno = (TextView) findViewById(R.id.txtRetorno);
 
+        /*Quando a activity principal é carregada ela monta a lista de contatos a partir
+        do arquivo de texto que já está salvo no dispositivo */
         montarListaContatos();
     }
 
-    // write text to file
-    public void WriteBtn(View v) {
 
-        // add-write text into file
-        try {
-            FileOutputStream fileout = openFileOutput("contatos.txt", MODE_PRIVATE);
-            /*OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);*/
+    public void SalvarContato(View v) {
+        //Valida se os campos foram preenchidos
+        if (validarCampos()){
+            try {
+                //Prepara o arquivo txt onde os contatos serão salvos
+                FileOutputStream fileout = openFileOutput("contatos.txt", MODE_PRIVATE);
+                ObjectOutputStream outputWriter = new ObjectOutputStream(fileout);
 
-            ObjectOutputStream outputWriter = new ObjectOutputStream(fileout);
+                //Cria um objeto contato
+                Contato contato = new Contato(
+                        nome.getText().toString(),
+                        telefone.getText().toString(),
+                        email.getText().toString(),
+                        cidade.getText().toString()
+                );
 
-            Contato contato = new Contato(
-                    nome.getText().toString(),
-                    telefone.getText().toString(),
-                    email.getText().toString(),
-                    cidade.getText().toString()
-            );
+                //Adiciona o objeto a lista de contatos
+                listaContatos.add(contato);
 
-            listaContatos.add(contato);
+                //Salva o objeto no arquivo de texto
+                outputWriter.writeObject(listaContatos);
+                outputWriter.close();
 
-            outputWriter.writeObject(listaContatos);
-            outputWriter.close();
+                limparCampos();
 
-            //display file saved message
-            Toast.makeText(getBaseContext(), "File saved successfully!",
-                    Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), "Contato salvo com sucesso.", Toast.LENGTH_SHORT).show();
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else{
+            Toast.makeText(getBaseContext(), "Ops. Você precisa preencher todos os campos.", Toast.LENGTH_SHORT).show();
         }
-    }
 
-    // Read text from file
-    public void ReadBtn(View v) {
-        try {
-            FileInputStream fileIn = openFileInput("contatos.txt");
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            ArrayList<Contato> lista = (ArrayList<Contato>) in.readObject();
-            in.close();
-            fileIn.close();
-
-            Contato c1;
-            c1= lista.get(0);
-
-            retorno.setText(c1.nomeContato.toString());
-
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void montarListaContatos() {
@@ -120,11 +103,47 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void mostrarListaContatos(View view) {
-        Intent contatosActivity = new Intent(this, ContatosActivity.class);
-        contatosActivity.putExtra("LIST", (Serializable) listaContatos);
-        startActivity(contatosActivity);
+        if(listaContatos.isEmpty()){
+            Toast.makeText(getBaseContext(), "A lista de contatos está vazia. Crie um contato primeiro.", Toast.LENGTH_SHORT).show();
+        }else{
+            Intent contatosActivity = new Intent(this, activity_lista_contatos.class);
+            contatosActivity.putExtra("LIST", (Serializable) listaContatos);
+            startActivity(contatosActivity);
+        }
     }
 
+    public void deletarContatos(View v){
+        try {
+            FileOutputStream fileout = openFileOutput("contatos.txt", MODE_PRIVATE);
+            ObjectOutputStream outputWriter = new ObjectOutputStream(fileout);
+
+            listaContatos.clear();
+
+            outputWriter.writeObject(listaContatos);
+            outputWriter.close();
+
+            Toast.makeText(getBaseContext(), "Os contatos foram apagados.", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean validarCampos(){
+        if(TextUtils.isEmpty(nome.getText())||TextUtils.isEmpty(telefone.getText())
+                ||TextUtils.isEmpty(email.getText())||TextUtils.isEmpty(cidade.getText())){
+            return false;
+        }
+        return true;
+    }
+
+    public void limparCampos(){
+        nome.setText("");
+        email.setText("");
+        telefone.setText("");
+        cidade.setText("");
+
+        nome.requestFocus();
+    }
 
 }
 

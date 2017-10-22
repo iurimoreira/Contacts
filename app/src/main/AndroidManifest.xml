@@ -16,7 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ContatosActivity"></activity>
+        <activity android:name=".activity_lista_contatos" />
+        <activity
+            android:name=".ContatosActivity"
+            android:label="@string/title_activity_contatos"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

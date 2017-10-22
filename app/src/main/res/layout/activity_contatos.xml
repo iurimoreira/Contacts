@@ -6,11 +6,99 @@
     android:layout_height="match_parent"
     tools:context="moreira.iuri.agenda.ContatosActivity">
 
-    <TextView
-        android:id="@+id/txtOi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Oi, sou legal!"
-        tools:layout_editor_absoluteX="62dp"
-        tools:layout_editor_absoluteY="109dp" />
+    <LinearLayout
+        android:layout_width="363dp"
+        android:layout_height="160dp"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="Nome:   "
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/nomeContato"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout_editor_absoluteX="62dp"
+                tools:layout_editor_absoluteY="109dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="Telefone:  "
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/telefoneContato"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout_editor_absoluteX="62dp"
+                tools:layout_editor_absoluteY="109dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="Email: "
+                android:textStyle="bold"
+                tools:ignore="DuplicateIds" />
+
+            <TextView
+                android:id="@+id/emailContato"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_weight="1"
+                tools:layout_editor_absoluteX="62dp"
+                tools:layout_editor_absoluteY="109dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="Cidade:  "
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/cidadeContato"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_weight="1"
+                tools:layout_editor_absoluteX="62dp"
+                tools:layout_editor_absoluteY="109dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>
